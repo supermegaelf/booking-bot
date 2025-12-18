@@ -32,9 +32,10 @@ async def startup():
     
     if os.getenv("TELEGRAM_BOT_TOKEN"):
         try:
+            import asyncio
             from app.routes.webhook import create_bot_application, set_bot_application
             
-            bot_app = create_bot_application()
+            bot_app = asyncio.run(create_bot_application())
             set_bot_application(bot_app)
             logger.info("Bot application initialized in FastAPI")
         except Exception as e:

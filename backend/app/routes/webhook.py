@@ -5,6 +5,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import os
 import logging
 import json
+from urllib.parse import unquote
 
 logger = logging.getLogger(__name__)
 
@@ -28,12 +29,13 @@ async def start_handler(update: Update, context):
     )
 
 
-def create_bot_application():
+async def create_bot_application():
     if not TELEGRAM_BOT_TOKEN:
         raise ValueError("TELEGRAM_BOT_TOKEN не установлен")
     
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start_handler))
+    await application.initialize()
     return application
 
 
@@ -48,7 +50,8 @@ async def webhook_endpoint(
     request: Request,
     x_telegram_bot_api_secret_token: str = Header(None, alias="X-Telegram-Bot-Api-Secret-Token")
 ):
-    if not TELEGRAM_BOT_TOKEN or token != TELEGRAM_BOT_TOKEN:
+    decoded_token = unquote(token)
+    if not TELEGRAM_BOT_TOKEN or decoded_token != TELEGRAM_BOT_TOKEN:
         raise HTTPException(status_code=403, detail="Invalid token")
     
     if TELEGRAM_WEBHOOK_SECRET and x_telegram_bot_api_secret_token != TELEGRAM_WEBHOOK_SECRET:
