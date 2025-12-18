@@ -18,18 +18,19 @@ services:
     networks:
       - booking_network
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: booking_backend
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-booking_user}:${POSTGRES_PASSWORD:-booking_password}@postgres:5432/${POSTGRES_DB:-booking_db}
-      SECRET_KEY: ${SECRET_KEY}
-      ALGORITHM: ${ALGORITHM:-HS256}
-      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      UPLOAD_DIR: ${UPLOAD_DIR:-./uploads}
+      backend:
+        build:
+          context: ./backend
+          dockerfile: Dockerfile
+        container_name: booking_backend
+        environment:
+          DATABASE_URL: postgresql://${POSTGRES_USER:-booking_user}:${POSTGRES_PASSWORD:-booking_password}@postgres:5432/${POSTGRES_DB:-booking_db}
+          SECRET_KEY: ${SECRET_KEY}
+          ALGORITHM: ${ALGORITHM:-HS256}
+          ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+          TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+          UPLOAD_DIR: ${UPLOAD_DIR:-./uploads}
+          FRONTEND_URL: http://frontend:5173
     ports:
       - "8080:8000"
     volumes:
