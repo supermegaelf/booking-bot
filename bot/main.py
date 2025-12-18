@@ -18,7 +18,17 @@ TELEGRAM_WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Добро пожаловать в LL BeautyBar!")
+    from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+    
+    keyboard = [
+        [InlineKeyboardButton("Открыть приложение", web_app={"url": "https://bot.familiartaste.info"})]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await update.message.reply_text(
+        "Добро пожаловать в LL BeautyBar!\n\nНажмите кнопку ниже, чтобы открыть приложение:",
+        reply_markup=reply_markup
+    )
 
 
 async def webhook_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -33,6 +43,9 @@ def main():
 
     application.add_handler(CommandHandler("start", start))
 
+    if not TELEGRAM_WEBHOOK_URL:
+        raise ValueError("TELEGRAM_WEBHOOK_URL не установлен")
+    
     if TELEGRAM_WEBHOOK_URL:
         if TELEGRAM_WEBHOOK_URL.endswith("/webhook"):
             webhook_url = f"{TELEGRAM_WEBHOOK_URL}/{TELEGRAM_BOT_TOKEN}"
@@ -46,10 +59,7 @@ def main():
             webhook_url=webhook_url,
             secret_token=TELEGRAM_WEBHOOK_SECRET,
         )
-        logger.info("Bot started with webhook")
-    else:
-        application.run_polling()
-        logger.info("Bot started with polling")
+        logger.info(f"Bot started with webhook: {webhook_url}")
 
 
 if __name__ == "__main__":

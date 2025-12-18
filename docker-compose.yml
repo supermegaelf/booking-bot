@@ -53,6 +53,8 @@ services:
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET}
       API_URL: http://backend:8000/api
       DATABASE_URL: postgresql://${POSTGRES_USER:-booking_user}:${POSTGRES_PASSWORD:-booking_password}@postgres:5432/${POSTGRES_DB:-booking_db}
+    ports:
+      - "8443:8443"
     volumes:
       - ./bot:/app
     depends_on:
