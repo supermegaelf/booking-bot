@@ -7,11 +7,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-    engine = create_engine(settings.database_url, pool_pre_ping=True)
+    database_url = settings.database_url
+    logger.info(f"Creating database engine with URL: {database_url.split('@')[1] if '@' in database_url else 'configured'}")
+    engine = create_engine(
+        database_url,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        echo=False
+    )
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    logger.info(f"Database connection configured: {settings.database_url.split('@')[1] if '@' in settings.database_url else 'configured'}")
+    logger.info(f"Database engine created successfully")
 except Exception as e:
     logger.error(f"Failed to create database engine: {e}")
+    logger.error(f"Database URL used: {settings.database_url}")
     raise
 
 Base = declarative_base()
