@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Enum as SQLEnum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -18,8 +18,8 @@ class Booking(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     service_id = Column(Integer, ForeignKey("services.id"), nullable=False)
-    master_id = Column(Integer, ForeignKey("masters.id"), nullable=False)
-    booking_date = Column(DateTime(timezone=True), nullable=False)
+    master_id = Column(Integer, ForeignKey("masters.id"), nullable=True)  # nullable для "любой специалист"
+    booking_date = Column(Date, nullable=False)
     booking_time = Column(String, nullable=False)
     status = Column(SQLEnum(BookingStatus), default=BookingStatus.PENDING)
     comment = Column(String, nullable=True)

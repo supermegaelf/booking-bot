@@ -1,6 +1,6 @@
 from .user import User
 from .service import Service
-from .master import Master
+from .master import Master, master_service_association
 from .booking import Booking
 from .certificate import Certificate
 from .promotion import Promotion
@@ -12,6 +12,7 @@ __all__ = [
     "User",
     "Service",
     "Master",
+    "master_service_association",
     "Booking",
     "Certificate",
     "Promotion",

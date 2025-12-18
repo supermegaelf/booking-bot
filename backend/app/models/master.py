@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String, Numeric, Boolean, DateTime, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Numeric, Boolean, DateTime, ForeignKey, Table, JSON
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
-import json
 
 
 master_service_association = Table(
@@ -23,7 +22,7 @@ class Master(Base):
     phone = Column(String, nullable=True)
     telegram_id = Column(Integer, nullable=True)
     photo_url = Column(String, nullable=True)
-    work_schedule = Column(String, nullable=True)
+    work_schedule = Column(JSON, nullable=True)  # JSON для индивидуального расписания мастера
     rating = Column(Numeric(3, 2), nullable=True, default=0)
     reviews_count = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
@@ -32,14 +31,3 @@ class Master(Base):
 
     services = relationship("Service", secondary=master_service_association, back_populates="masters")
     reviews = relationship("Review", back_populates="master")
-
-    def get_work_schedule(self):
-        if self.work_schedule:
-            return json.loads(self.work_schedule)
-        return None
-
-    def set_work_schedule(self, schedule):
-        if schedule:
-            self.work_schedule = json.dumps(schedule)
-        else:
-            self.work_schedule = None
