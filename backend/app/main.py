@@ -56,15 +56,22 @@ async def proxy_frontend(request: Request, path: str):
         return Response(content="Not Found", status_code=404)
     
     async with httpx.AsyncClient() as client:
-        url = f"{FRONTEND_URL}/{path}" if path else FRONTEND_URL
+        # Construct URL - add path only if it's not empty
+        if path:
+            url = f"{FRONTEND_URL}/{path}"
+        else:
+            url = FRONTEND_URL
         params = dict(request.query_params)
+        
+        # Prepare headers - remove host and content-length
+        headers = {k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]}
         
         try:
             response = await client.request(
                 method=request.method,
                 url=url,
                 params=params,
-                headers={k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]},
+                headers=headers,
                 content=await request.body() if request.method in ["POST", "PUT", "PATCH"] else None,
                 timeout=30.0,
                 follow_redirects=True
