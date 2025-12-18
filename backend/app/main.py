@@ -63,8 +63,10 @@ async def proxy_frontend(request: Request, path: str):
             url = FRONTEND_URL
         params = dict(request.query_params)
         
-        # Prepare headers - remove host and content-length
+        # Prepare headers - remove host and content-length, set proper host for Vite
         headers = {k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]}
+        # Set Host header to localhost to bypass Vite host checking
+        headers["Host"] = "localhost:5173"
         
         try:
             response = await client.request(

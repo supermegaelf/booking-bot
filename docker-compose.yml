@@ -80,7 +80,7 @@ services:
       - backend
     networks:
       - booking_network
-    command: npm run dev -- --host 0.0.0.0
+    command: npm run dev -- --host 0.0.0.0 --allowed-hosts all
 
 volumes:
   postgres_data:
