@@ -2,11 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.config import settings
+from app.routes import webhook
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Booking Bot API", version="1.0.0")
+
+app.include_router(webhook.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,6 +29,16 @@ async def startup():
     except Exception as e:
         logger.error(f"Failed to create database tables: {e}")
         raise
+    
+    if os.getenv("TELEGRAM_BOT_TOKEN"):
+        try:
+            from app.routes.webhook import create_bot_application, set_bot_application
+            
+            bot_app = create_bot_application()
+            set_bot_application(bot_app)
+            logger.info("Bot application initialized in FastAPI")
+        except Exception as e:
+            logger.warning(f"Failed to initialize bot application: {e}")
 
 
 @app.get("/")

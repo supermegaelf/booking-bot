@@ -31,7 +31,7 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       UPLOAD_DIR: ${UPLOAD_DIR:-./uploads}
     ports:
-      - "8000:8000"
+      - "8080:8000"
     volumes:
       - ./backend:/app
       - uploads_data:/app/uploads
