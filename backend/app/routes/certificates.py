@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
-from app import schemas
+from app.schemas import CertificateResponse
 from app.models import Certificate, User
 
 router = APIRouter(prefix="/api/certificates", tags=["certificates"])
@@ -19,7 +19,7 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
     return user
 
 
-@router.get("/", response_model=List[schemas.CertificateResponse])
+@router.get("/", response_model=List[CertificateResponse])
 async def get_certificates(
     current_user: User = Depends(get_current_user),
     is_used: bool = None,
@@ -34,7 +34,7 @@ async def get_certificates(
     return certificates
 
 
-@router.get("/{certificate_id}", response_model=schemas.CertificateResponse)
+@router.get("/{certificate_id}", response_model=CertificateResponse)
 async def get_certificate(
     certificate_id: int,
     current_user: User = Depends(get_current_user),

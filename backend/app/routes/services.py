@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
-from app import schemas
+from app.schemas import ServiceResponse
 from app.models import Service
 
 router = APIRouter(prefix="/api/services", tags=["services"])
 
 
-@router.get("/", response_model=List[schemas.ServiceResponse])
+@router.get("/", response_model=List[ServiceResponse])
 async def get_services(
     category: str = None,
     is_active: bool = True,
@@ -26,7 +26,7 @@ async def get_services(
     return services
 
 
-@router.get("/{service_id}", response_model=schemas.ServiceResponse)
+@router.get("/{service_id}", response_model=ServiceResponse)
 async def get_service(service_id: int, db: Session = Depends(get_db)):
     service = db.query(Service).filter(Service.id == service_id).first()
     if not service:

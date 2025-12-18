@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import date, datetime, timedelta
 from app.database import get_db
-from app import schemas
+from app.schemas import MasterResponse, AvailableTimeSlot, AvailableSlotsResponse
 from app.models import Master, Service, Booking, master_service_association
 from app.models.booking import BookingStatus
 from sqlalchemy import and_, or_
@@ -11,7 +11,7 @@ from sqlalchemy import and_, or_
 router = APIRouter(prefix="/api/masters", tags=["masters"])
 
 
-@router.get("/", response_model=List[schemas.MasterResponse])
+@router.get("/", response_model=List[MasterResponse])
 async def get_masters(
     service_id: Optional[int] = None,
     is_active: bool = True,
@@ -31,7 +31,7 @@ async def get_masters(
     return masters
 
 
-@router.get("/{master_id}", response_model=schemas.MasterResponse)
+@router.get("/{master_id}", response_model=MasterResponse)
 async def get_master(master_id: int, db: Session = Depends(get_db)):
     master = db.query(Master).filter(Master.id == master_id).first()
     if not master:
@@ -39,7 +39,7 @@ async def get_master(master_id: int, db: Session = Depends(get_db)):
     return master
 
 
-@router.get("/{master_id}/available-slots", response_model=schemas.AvailableSlotsResponse)
+@router.get("/{master_id}/available-slots", response_model=AvailableSlotsResponse)
 async def get_available_slots(
     master_id: int,
     booking_date: date,
@@ -83,7 +83,7 @@ async def get_available_slots(
         time_str = current.time().strftime("%H:%M")
         is_available = time_str not in booked_times
         
-        slots.append(schemas.AvailableTimeSlot(
+        slots.append(AvailableTimeSlot(
             time=time_str,
             available=is_available,
             master_id=master_id,
@@ -92,10 +92,10 @@ async def get_available_slots(
         
         current += timedelta(minutes=30)
     
-    return schemas.AvailableSlotsResponse(date=booking_date, slots=slots)
+    return AvailableSlotsResponse(date=booking_date, slots=slots)
 
 
-@router.get("/service/{service_id}/available-slots", response_model=schemas.AvailableSlotsResponse)
+@router.get("/service/{service_id}/available-slots", response_model=AvailableSlotsResponse)
 async def get_available_slots_for_service(
     service_id: int,
     booking_date: date,
@@ -115,7 +115,7 @@ async def get_available_slots_for_service(
         ).all()
     
     if not masters:
-        return schemas.AvailableSlotsResponse(date=booking_date, slots=[])
+        return AvailableSlotsResponse(date=booking_date, slots=[])
     
     existing_bookings = db.query(Booking).filter(
         and_(
@@ -154,7 +154,7 @@ async def get_available_slots_for_service(
             time_str = current.time().strftime("%H:%M")
             is_available = time_str not in master_booked
             
-            all_slots.append(schemas.AvailableTimeSlot(
+            all_slots.append(AvailableTimeSlot(
                 time=time_str,
                 available=is_available,
                 master_id=master.id,
@@ -165,4 +165,4 @@ async def get_available_slots_for_service(
     
     all_slots.sort(key=lambda x: x.time)
     
-    return schemas.AvailableSlotsResponse(date=booking_date, slots=all_slots)
+    return AvailableSlotsResponse(date=booking_date, slots=all_slots)

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.database import get_db
-from app import schemas
+from app.schemas import UserResponse, UserUpdate
 from app.models import User
 
 router = APIRouter(prefix="/api/users", tags=["users"])
@@ -19,16 +19,16 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
     return user
 
 
-@router.get("/me", response_model=schemas.UserResponse)
+@router.get("/me", response_model=UserResponse)
 async def get_current_user_profile(
     current_user: User = Depends(get_current_user)
 ):
     return current_user
 
 
-@router.patch("/me", response_model=schemas.UserResponse)
+@router.patch("/me", response_model=UserResponse)
 async def update_current_user_profile(
-    user_update: schemas.UserUpdate,
+    user_update: UserUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

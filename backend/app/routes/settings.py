@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app import schemas
+from app.schemas import SalonSettingsResponse
 from app.models import SalonSettings
 
 router = APIRouter(prefix="/api/settings", tags=["settings"])
 
 
-@router.get("/", response_model=schemas.SalonSettingsResponse)
+@router.get("/", response_model=SalonSettingsResponse)
 async def get_settings(db: Session = Depends(get_db)):
     settings = db.query(SalonSettings).first()
     if not settings:

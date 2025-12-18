@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
-from app import schemas
+from app.schemas import ReviewResponse, ReviewCreate
 from app.models import Review, User, Master, Booking
 
 router = APIRouter(prefix="/api/reviews", tags=["reviews"])
@@ -69,7 +69,7 @@ async def create_review(
     return db_review
 
 
-@router.get("/master/{master_id}", response_model=List[schemas.ReviewResponse])
+@router.get("/master/{master_id}", response_model=List[ReviewResponse])
 async def get_master_reviews(master_id: int, db: Session = Depends(get_db)):
     master = db.query(Master).filter(Master.id == master_id).first()
     if not master:

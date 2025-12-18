@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import date, datetime
 from app.database import get_db
-from app import schemas
+from app.schemas import BookingResponse, BookingCreate
 from app.models import Booking, User, Service, Master
 from app.models.booking import BookingStatus
 
@@ -21,9 +21,9 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
     return user
 
 
-@router.post("/", response_model=schemas.BookingResponse)
+@router.post("/", response_model=BookingResponse)
 async def create_booking(
-    booking: schemas.BookingCreate,
+    booking: BookingCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -74,7 +74,7 @@ async def create_booking(
     return db_booking
 
 
-@router.get("/", response_model=List[schemas.BookingResponse])
+@router.get("/", response_model=List[BookingResponse])
 async def get_bookings(
     current_user: User = Depends(get_current_user),
     status: Optional[BookingStatus] = None,
@@ -89,7 +89,7 @@ async def get_bookings(
     return bookings
 
 
-@router.get("/{booking_id}", response_model=schemas.BookingResponse)
+@router.get("/{booking_id}", response_model=BookingResponse)
 async def get_booking(
     booking_id: int,
     current_user: User = Depends(get_current_user),
@@ -106,7 +106,7 @@ async def get_booking(
     return booking
 
 
-@router.patch("/{booking_id}/cancel", response_model=schemas.BookingResponse)
+@router.patch("/{booking_id}/cancel", response_model=BookingResponse)
 async def cancel_booking(
     booking_id: int,
     current_user: User = Depends(get_current_user),

@@ -3,13 +3,13 @@ from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
 from app.database import get_db
-from app import schemas
+from app.schemas import PromotionResponse
 from app.models import Promotion
 
 router = APIRouter(prefix="/api/promotions", tags=["promotions"])
 
 
-@router.get("/", response_model=List[schemas.PromotionResponse])
+@router.get("/", response_model=List[PromotionResponse])
 async def get_promotions(
     active_only: bool = True,
     db: Session = Depends(get_db)
@@ -28,7 +28,7 @@ async def get_promotions(
     return promotions
 
 
-@router.get("/{promotion_id}", response_model=schemas.PromotionResponse)
+@router.get("/{promotion_id}", response_model=PromotionResponse)
 async def get_promotion(promotion_id: int, db: Session = Depends(get_db)):
     promotion = db.query(Promotion).filter(Promotion.id == promotion_id).first()
     if not promotion:
