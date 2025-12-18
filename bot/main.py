@@ -34,11 +34,16 @@ def main():
     application.add_handler(CommandHandler("start", start))
 
     if TELEGRAM_WEBHOOK_URL:
+        if TELEGRAM_WEBHOOK_URL.endswith("/webhook"):
+            webhook_url = f"{TELEGRAM_WEBHOOK_URL}/{TELEGRAM_BOT_TOKEN}"
+        else:
+            webhook_url = f"{TELEGRAM_WEBHOOK_URL}/webhook/{TELEGRAM_BOT_TOKEN}"
+        
         application.run_webhook(
             listen="0.0.0.0",
             port=8443,
             url_path=TELEGRAM_BOT_TOKEN,
-            webhook_url=f"{TELEGRAM_WEBHOOK_URL}/webhook/{TELEGRAM_BOT_TOKEN}",
+            webhook_url=webhook_url,
             secret_token=TELEGRAM_WEBHOOK_SECRET,
         )
         logger.info("Bot started with webhook")
