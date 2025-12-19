@@ -9,12 +9,24 @@ router = APIRouter(prefix="/api/certificates", tags=["certificates"])
 
 
 def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram-User-Id"), db: Session = Depends(get_db)) -> User:
+    import logging
+    logger = logging.getLogger(__name__)
+    
     if not telegram_id:
+        logger.warning("No telegram_id provided in header")
         raise HTTPException(status_code=401, detail="Telegram user ID required")
     
     user = db.query(User).filter(User.telegram_id == telegram_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        logger.warning(f"User not found for telegram_id: {telegram_id}")
+        user = User(
+            telegram_id=telegram_id,
+            is_admin=False
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        logger.info(f"Created new user for telegram_id: {telegram_id}")
     
     return user
 

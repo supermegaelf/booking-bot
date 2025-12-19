@@ -30,6 +30,7 @@ class FrontendProxyMiddleware(BaseHTTPMiddleware):
         path = request.url.path
         
         if path.startswith("/api/") or path.startswith("/webhook/") or path in ["/health", "/docs", "/openapi.json", "/redoc"]:
+            logger.debug(f"Passing API request to FastAPI: {request.method} {path}")
             return await call_next(request)
         
         if request.method in ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]:
