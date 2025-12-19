@@ -58,6 +58,15 @@ async def startup():
             logger.warning(f"Failed to initialize bot application: {e}")
 
 
+@app.get("/")
+async def root():
+    return {
+        "message": "Booking Bot API",
+        "version": "1.0.0",
+        "docs": "/docs"
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
