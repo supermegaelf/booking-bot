@@ -167,6 +167,13 @@ export const bookingsApi = {
     })
     return response.data
   },
+
+  reschedule: async (id: number, rescheduleData: { booking_date: string; booking_time: string }): Promise<Booking> => {
+    const response = await apiClient.patch<Booking>(`/bookings/${id}/reschedule`, rescheduleData, {
+      headers: getAuthHeaders(),
+    })
+    return response.data
+  },
 }
 
 export const certificatesApi = {

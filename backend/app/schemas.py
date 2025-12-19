@@ -71,6 +71,11 @@ class BookingCreate(BookingBase):
     pass
 
 
+class BookingReschedule(BaseModel):
+    booking_date: date
+    booking_time: str
+
+
 class BookingResponse(BookingBase):
     id: int
     user_id: int

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import date, datetime
 from app.database import get_db
-from app.schemas import BookingResponse, BookingCreate
+from app.schemas import BookingResponse, BookingCreate, BookingReschedule
 from app.models import Booking, User, Service, Master
 from app.models.booking import BookingStatus
 
@@ -123,7 +123,53 @@ async def cancel_booking(
     if booking.status in [BookingStatus.COMPLETED, BookingStatus.CANCELLED]:
         raise HTTPException(status_code=400, detail="Cannot cancel completed or already cancelled booking")
     
+    booking_datetime = datetime.combine(booking.booking_date, datetime.strptime(booking.booking_time, "%H:%M").time())
+    time_until_booking = (booking_datetime - datetime.now()).total_seconds() / 3600
+    
+    if time_until_booking < 24:
+        raise HTTPException(status_code=400, detail="Cannot cancel booking less than 24 hours before appointment")
+    
     booking.status = BookingStatus.CANCELLED
+    db.commit()
+    db.refresh(booking)
+    
+    return booking
+
+
+@router.patch("/{booking_id}/reschedule", response_model=BookingResponse)
+async def reschedule_booking(
+    booking_id: int,
+    reschedule_data: BookingReschedule,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    
+    booking = db.query(Booking).filter(
+        Booking.id == booking_id,
+        Booking.user_id == current_user.id
+    ).first()
+    
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    if booking.status in [BookingStatus.COMPLETED, BookingStatus.CANCELLED]:
+        raise HTTPException(status_code=400, detail="Cannot reschedule completed or cancelled booking")
+    
+    existing_booking = db.query(Booking).filter(
+        Booking.master_id == booking.master_id,
+        Booking.booking_date == reschedule_data.booking_date,
+        Booking.booking_time == reschedule_data.booking_time,
+        Booking.status.in_([BookingStatus.PENDING, BookingStatus.CONFIRMED]),
+        Booking.id != booking_id
+    ).first()
+    
+    if existing_booking:
+        raise HTTPException(status_code=400, detail="Time slot already booked")
+    
+    booking.booking_date = reschedule_data.booking_date
+    booking.booking_time = reschedule_data.booking_time
+    booking.status = BookingStatus.PENDING
+    
     db.commit()
     db.refresh(booking)
     

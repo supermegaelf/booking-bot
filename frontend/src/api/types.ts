@@ -130,6 +130,11 @@ export interface BookingCreate {
   certificate_id?: number | null
 }
 
+export interface BookingReschedule {
+  booking_date: string
+  booking_time: string
+}
+
 export interface ReviewCreate {
   master_id: number
   booking_id?: number | null
