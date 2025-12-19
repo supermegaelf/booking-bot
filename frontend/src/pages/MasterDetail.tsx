@@ -32,7 +32,7 @@ function MasterDetail() {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Специалист не найден</h2>
           <Link to="/masters" className="text-blue-600 hover:underline">
-            Вернуться к специалистам
+            Назад
           </Link>
         </div>
       </div>
@@ -47,7 +47,7 @@ function MasterDetail() {
           className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors inline-block"
         >
           <span className="text-xl">←</span>
-          <span>Назад к специалистам</span>
+          <span>Назад</span>
         </Link>
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">

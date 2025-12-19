@@ -16,6 +16,16 @@ function CreateReview() {
   const [rating, setRating] = useState<number>(5)
   const [comment, setComment] = useState<string>('')
 
+  const handleBack = () => {
+    if (masterId) {
+      navigate(`/masters/${masterId}`)
+    } else if (window.history.length > 1) {
+      navigate(-1)
+    } else {
+      navigate('/')
+    }
+  }
+
   const { data: master } = useQuery({
     queryKey: ['master', masterId],
     queryFn: () => mastersApi.getById(masterId!),
@@ -56,7 +66,7 @@ function CreateReview() {
             onClick={() => navigate('/masters')}
             className="text-blue-600 hover:underline"
           >
-            Вернуться к специалистам
+            Назад
           </button>
         </div>
       </div>
@@ -67,7 +77,7 @@ function CreateReview() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleBack}
           className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
         >
           <span className="text-xl">←</span>
@@ -129,7 +139,7 @@ function CreateReview() {
             </button>
             <button
               type="button"
-              onClick={() => navigate(-1)}
+              onClick={handleBack}
               className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
             >
               Отмена

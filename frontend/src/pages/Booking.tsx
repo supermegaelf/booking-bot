@@ -96,6 +96,14 @@ function Booking() {
     }
   }
 
+  const handleBackToPreviousPage = () => {
+    if (window.history.length > 1) {
+      navigate(-1)
+    } else {
+      navigate('/')
+    }
+  }
+
   const handleServiceSelect = (serviceId: number) => {
     setSelectedServiceId(serviceId)
     setSelectedMasterId(null)
@@ -590,7 +598,7 @@ function Booking() {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {step !== 7 && (
           <button
-            onClick={() => navigate(-1)}
+            onClick={handleBackToPreviousPage}
             className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
           >
             <span className="text-xl">←</span>
