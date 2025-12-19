@@ -67,11 +67,11 @@ function CreateReview() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <button
-          onClick={() => navigate('/')}
-          className="mb-4 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+          onClick={() => navigate(-1)}
+          className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
         >
-          <span>←</span>
-          <span>На главную</span>
+          <span className="text-xl">←</span>
+          <span>Назад</span>
         </button>
         <h1 className="text-3xl font-bold mb-6">Оставить отзыв</h1>
 

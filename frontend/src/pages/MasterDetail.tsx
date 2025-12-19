@@ -42,8 +42,12 @@ function MasterDetail() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        <Link to="/masters" className="text-blue-600 hover:underline mb-4 inline-block">
-          ← Назад к специалистам
+        <Link
+          to="/masters"
+          className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors inline-block"
+        >
+          <span className="text-xl">←</span>
+          <span>Назад к специалистам</span>
         </Link>
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
