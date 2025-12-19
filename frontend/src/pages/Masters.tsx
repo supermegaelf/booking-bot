@@ -9,6 +9,14 @@ function Masters() {
     queryFn: () => mastersApi.getAll(undefined, true),
   })
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1)
+    } else {
+      navigate('/')
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -21,7 +29,8 @@ function Masters() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <button
-          onClick={() => navigate(-1)}
+          type="button"
+          onClick={handleBack}
           className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
         >
           <span className="text-xl">←</span>
