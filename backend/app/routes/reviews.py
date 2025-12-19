@@ -19,9 +19,9 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
     return user
 
 
-@router.post("/", response_model=schemas.ReviewResponse)
+@router.post("/", response_model=ReviewResponse)
 async def create_review(
-    review: schemas.ReviewCreate,
+    review: ReviewCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
