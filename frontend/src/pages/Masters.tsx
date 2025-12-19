@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { mastersApi } from '../api/client'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Masters() {
+  const navigate = useNavigate()
   const { data: masters, isLoading } = useQuery({
     queryKey: ['masters'],
     queryFn: () => mastersApi.getAll(undefined, true),
@@ -19,6 +20,13 @@ function Masters() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
+        <button
+          onClick={() => navigate('/')}
+          className="mb-4 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+        >
+          <span>←</span>
+          <span>На главную</span>
+        </button>
         <h1 className="text-3xl font-bold mb-6">Специалисты</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

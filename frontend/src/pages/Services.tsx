@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { servicesApi } from '../api/client'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ErrorMessage from '../components/ErrorMessage'
 
 function Services() {
@@ -38,6 +38,13 @@ function Services() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
+        <button
+          onClick={() => navigate('/')}
+          className="mb-4 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+        >
+          <span>←</span>
+          <span>На главную</span>
+        </button>
         <h1 className="text-3xl font-bold mb-6">Услуги</h1>
         
         {categories && categories.length > 0 && (

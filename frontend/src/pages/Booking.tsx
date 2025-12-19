@@ -589,6 +589,15 @@ function Booking() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {step !== 7 && (
+          <button
+            onClick={() => navigate('/')}
+            className="mb-4 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+          >
+            <span>←</span>
+            <span>На главную</span>
+          </button>
+        )}
+        {step !== 7 && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-600">

@@ -66,6 +66,13 @@ function CreateReview() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <button
+          onClick={() => navigate('/')}
+          className="mb-4 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+        >
+          <span>←</span>
+          <span>На главную</span>
+        </button>
         <h1 className="text-3xl font-bold mb-6">Оставить отзыв</h1>
 
         {master && (
