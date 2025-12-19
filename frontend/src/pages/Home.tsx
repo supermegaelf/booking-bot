@@ -57,8 +57,8 @@ function Home() {
   })
 
   const { data: certificates } = useQuery({
-    queryKey: ['certificates', 'featured'],
-    queryFn: () => certificatesApi.getAll(false),
+    queryKey: ['certificates', 'available'],
+    queryFn: () => certificatesApi.getAvailable(),
   })
 
   const featuredServiceNames = ['Маникюр', 'Брови', 'Педикюр', 'Мейк', 'Шугаринг', 'Массаж', 'Укладка']

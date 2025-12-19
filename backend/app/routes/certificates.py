@@ -19,6 +19,20 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
     return user
 
 
+@router.get("/available", response_model=List[CertificateResponse])
+async def get_available_certificates(
+    category: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    query = db.query(Certificate).filter(Certificate.purchased_by_user_id.is_(None))
+    
+    if category:
+        query = query.filter(Certificate.category == category)
+    
+    certificates = query.order_by(Certificate.created_at.desc()).all()
+    return certificates
+
+
 @router.get("/", response_model=List[CertificateResponse])
 async def get_certificates(
     current_user: User = Depends(get_current_user),

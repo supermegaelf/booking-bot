@@ -170,6 +170,14 @@ export const bookingsApi = {
 }
 
 export const certificatesApi = {
+  getAvailable: async (category?: string): Promise<Certificate[]> => {
+    const params = new URLSearchParams()
+    if (category) params.append('category', category)
+    
+    const response = await apiClient.get<Certificate[]>(`/certificates/available?${params.toString()}`)
+    return response.data
+  },
+
   getAll: async (isUsed?: boolean): Promise<Certificate[]> => {
     const params = new URLSearchParams()
     if (isUsed !== undefined) params.append('is_used', isUsed.toString())
