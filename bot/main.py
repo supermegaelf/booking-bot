@@ -15,13 +15,14 @@ logger = logging.getLogger(__name__)
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_WEBHOOK_URL = os.getenv("TELEGRAM_WEBHOOK_URL")
 TELEGRAM_WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET")
+MINI_APP_URL = os.getenv("MINI_APP_URL", "https://bot.familiartaste.info")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     
     keyboard = [
-        [InlineKeyboardButton("Открыть приложение", web_app={"url": "https://bot.familiartaste.info"})]
+        [InlineKeyboardButton("Открыть приложение", web_app={"url": MINI_APP_URL})]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
