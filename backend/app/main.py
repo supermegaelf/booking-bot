@@ -52,7 +52,8 @@ async def startup():
     
     try:
         from app.database import SessionLocal
-        from app.models import Service
+        from app.models import Service, Master
+        from app.models.master import master_service_association
         from decimal import Decimal
         
         db = SessionLocal()
@@ -124,10 +125,107 @@ async def startup():
                 logger.info(f"Added {len(test_services)} test services")
             else:
                 logger.info(f"Database already has {existing_services} services")
+            
+            existing_masters = db.query(Master).count()
+            if existing_masters == 0:
+                services = db.query(Service).all()
+                service_map = {s.name: s.id for s in services}
+                
+                test_masters = [
+                    {
+                        "name": "Анна М.",
+                        "specialization": "Мастер маникюра и педикюра",
+                        "services": ["Маникюр", "Педикюр"],
+                        "work_schedule": {
+                            "monday": {"start": "09:00", "end": "18:00"},
+                            "tuesday": {"start": "09:00", "end": "18:00"},
+                            "wednesday": {"start": "09:00", "end": "18:00"},
+                            "thursday": {"start": "09:00", "end": "18:00"},
+                            "friday": {"start": "09:00", "end": "18:00"},
+                            "saturday": {"start": "10:00", "end": "16:00"}
+                        }
+                    },
+                    {
+                        "name": "Диана М.",
+                        "specialization": "Массажист",
+                        "services": ["Массаж"],
+                        "work_schedule": {
+                            "monday": {"start": "10:00", "end": "19:00"},
+                            "tuesday": {"start": "10:00", "end": "19:00"},
+                            "wednesday": {"start": "10:00", "end": "19:00"},
+                            "thursday": {"start": "10:00", "end": "19:00"},
+                            "friday": {"start": "10:00", "end": "19:00"},
+                            "saturday": {"start": "11:00", "end": "17:00"}
+                        }
+                    },
+                    {
+                        "name": "Елена К.",
+                        "specialization": "Визажист и бровист",
+                        "services": ["Мейк", "Брови"],
+                        "work_schedule": {
+                            "monday": {"start": "09:00", "end": "18:00"},
+                            "tuesday": {"start": "09:00", "end": "18:00"},
+                            "wednesday": {"start": "09:00", "end": "18:00"},
+                            "thursday": {"start": "09:00", "end": "18:00"},
+                            "friday": {"start": "09:00", "end": "18:00"},
+                            "saturday": {"start": "10:00", "end": "16:00"}
+                        }
+                    },
+                    {
+                        "name": "Мария С.",
+                        "specialization": "Парикмахер",
+                        "services": ["Укладка"],
+                        "work_schedule": {
+                            "monday": {"start": "09:00", "end": "18:00"},
+                            "tuesday": {"start": "09:00", "end": "18:00"},
+                            "wednesday": {"start": "09:00", "end": "18:00"},
+                            "thursday": {"start": "09:00", "end": "18:00"},
+                            "friday": {"start": "09:00", "end": "18:00"},
+                            "saturday": {"start": "10:00", "end": "16:00"}
+                        }
+                    },
+                    {
+                        "name": "Ольга В.",
+                        "specialization": "Мастер депиляции",
+                        "services": ["Шугаринг"],
+                        "work_schedule": {
+                            "monday": {"start": "10:00", "end": "19:00"},
+                            "tuesday": {"start": "10:00", "end": "19:00"},
+                            "wednesday": {"start": "10:00", "end": "19:00"},
+                            "thursday": {"start": "10:00", "end": "19:00"},
+                            "friday": {"start": "10:00", "end": "19:00"},
+                            "saturday": {"start": "11:00", "end": "17:00"}
+                        }
+                    }
+                ]
+                
+                for master_data in test_masters:
+                    master = Master(
+                        name=master_data["name"],
+                        specialization=master_data["specialization"],
+                        work_schedule=master_data["work_schedule"],
+                        is_active=True
+                    )
+                    db.add(master)
+                    db.flush()
+                    
+                    for service_name in master_data["services"]:
+                        if service_name in service_map:
+                            db.execute(
+                                master_service_association.insert().values(
+                                    master_id=master.id,
+                                    service_id=service_map[service_name]
+                                )
+                            )
+                
+                db.commit()
+                logger.info(f"Added {len(test_masters)} test masters")
+            else:
+                logger.info(f"Database already has {existing_masters} masters")
         finally:
             db.close()
     except Exception as e:
-        logger.warning(f"Failed to add test services: {e}")
+        logger.warning(f"Failed to add test data: {e}")
     
     if os.getenv("TELEGRAM_BOT_TOKEN"):
         try:
