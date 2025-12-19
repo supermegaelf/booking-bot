@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from typing import List, Optional
+import logging
 from app.database import get_db
 from app.schemas import ReviewResponse, ReviewCreate
 from app.models import Review, User, Master, Booking
@@ -9,12 +11,28 @@ router = APIRouter(prefix="/api/reviews", tags=["reviews"])
 
 
 def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram-User-Id"), db: Session = Depends(get_db)) -> User:
+    logger = logging.getLogger(__name__)
+    
     if not telegram_id:
+        logger.warning("No telegram_id provided in header")
         raise HTTPException(status_code=401, detail="Telegram user ID required")
     
     user = db.query(User).filter(User.telegram_id == telegram_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        logger.warning(f"User not found for telegram_id: {telegram_id}")
+        user = User(
+            telegram_id=telegram_id,
+            is_admin=False
+        )
+        db.add(user)
+        try:
+            db.commit()
+            db.refresh(user)
+            logger.info(f"Created new user for telegram_id: {telegram_id}")
+        except IntegrityError:
+            db.rollback()
+            user = db.query(User).filter(User.telegram_id == telegram_id).first()
+            logger.info(f"User already exists for telegram_id: {telegram_id}, retrieved from database")
     
     return user
 

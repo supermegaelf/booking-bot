@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from typing import Optional
 from app.database import get_db
 from app.schemas import UserResponse, UserUpdate
@@ -24,9 +25,14 @@ def get_current_user(telegram_id: Optional[int] = Header(None, alias="X-Telegram
             is_admin=False
         )
         db.add(user)
-        db.commit()
-        db.refresh(user)
-        logger.info(f"Created new user for telegram_id: {telegram_id}")
+        try:
+            db.commit()
+            db.refresh(user)
+            logger.info(f"Created new user for telegram_id: {telegram_id}")
+        except IntegrityError:
+            db.rollback()
+            user = db.query(User).filter(User.telegram_id == telegram_id).first()
+            logger.info(f"User already exists for telegram_id: {telegram_id}, retrieved from database")
     
     return user
 
