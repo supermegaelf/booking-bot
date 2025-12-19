@@ -68,10 +68,11 @@ async def health():
 
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
 async def catch_all(request: Request, path: str):
-    if path.startswith("api/") or path.startswith("webhook/") or path in ["health", "docs", "openapi.json", "redoc"]:
+    if path and (path.startswith("api/") or path.startswith("webhook/")):
         from fastapi import HTTPException
-        raise HTTPException(status_code=404, detail="Not Found")
+        raise HTTPException(status_code=404, detail="API route not found")
     
+    logger.debug(f"Proxying request to frontend: {path}")
     async with httpx.AsyncClient() as client:
         url = f"{FRONTEND_URL}/{path}" if path else FRONTEND_URL
         try:
