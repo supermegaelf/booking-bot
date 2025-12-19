@@ -18,7 +18,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: false,
-    allowedHosts: 'all',
+    allowedHosts: ['localhost', '127.0.0.1', 'frontend', '.'],
     hmr: {
       host: 'localhost',
     },
