@@ -104,6 +104,15 @@ function Booking() {
     }
   }
 
+  const handleTopBackButton = () => {
+    const firstStep = initialServiceId ? 2 : 1
+    if (step === firstStep) {
+      handleBackToPreviousPage()
+    } else {
+      handleBack()
+    }
+  }
+
   const handleServiceSelect = (serviceId: number) => {
     setSelectedServiceId(serviceId)
     setSelectedMasterId(null)
@@ -598,7 +607,7 @@ function Booking() {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {step !== 7 && (
           <button
-            onClick={handleBackToPreviousPage}
+            onClick={handleTopBackButton}
             className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
           >
             <span className="text-xl">←</span>
