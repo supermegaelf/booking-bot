@@ -14,7 +14,26 @@ import type {
   UserUpdate
 } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL
+  if (!envUrl || envUrl.trim() === '') {
+    return '/api'
+  }
+  if (envUrl.startsWith('http://localhost') || envUrl.startsWith('https://localhost')) {
+    console.warn('VITE_API_URL uses localhost, which may not work in Docker. Consider using relative path /api')
+    return '/api'
+  }
+  if (envUrl.startsWith('http')) {
+    return envUrl
+  }
+  return envUrl.startsWith('/') ? envUrl : `/${envUrl}`
+}
+
+const API_BASE_URL = getApiBaseUrl()
+
+if (import.meta.env.DEV) {
+  console.log('API_BASE_URL:', API_BASE_URL)
+}
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
