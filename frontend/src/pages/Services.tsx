@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { servicesApi } from '../api/client'
 import { Link } from 'react-router-dom'
+import ErrorMessage from '../components/ErrorMessage'
 
 function Services() {
-  const { data: services, isLoading } = useQuery({
+  const { data: services, isLoading, error, refetch } = useQuery({
     queryKey: ['services'],
     queryFn: () => servicesApi.getAll(undefined, true),
   })
@@ -17,6 +18,19 @@ function Services() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-gray-600">Загрузка...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          <ErrorMessage
+            message={error instanceof Error ? error.message : 'Не удалось загрузить услуги'}
+            onRetry={() => refetch()}
+          />
+        </div>
       </div>
     )
   }

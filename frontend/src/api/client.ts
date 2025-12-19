@@ -23,12 +23,21 @@ const apiClient = axios.create({
   },
 })
 
-const getTelegramUserId = (): number | null => {
-  if (typeof window !== 'undefined' && (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id) {
-    return (window as any).Telegram.WebApp.initDataUnsafe.user.id
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const message = error.response.data?.detail || error.response.data?.message || 'Произошла ошибка при запросе'
+      return Promise.reject(new Error(message))
+    } else if (error.request) {
+      return Promise.reject(new Error('Нет ответа от сервера. Проверьте подключение к интернету.'))
+    } else {
+      return Promise.reject(new Error(error.message || 'Произошла неизвестная ошибка'))
+    }
   }
-  return null
-}
+)
+
+import { getTelegramUserId } from '../utils/telegram'
 
 const getAuthHeaders = () => {
   const telegramId = getTelegramUserId()
