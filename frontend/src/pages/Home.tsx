@@ -180,64 +180,28 @@ function Home() {
         )}
 
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold">Подарочные сертификаты</h2>
-            <Link
-              to="/certificates"
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Все сертификаты →
-            </Link>
+          <h2 className="text-3xl font-bold mb-6">Подарочные сертификаты</h2>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-md mx-auto">
+            {featuredCertificates.length > 0 && featuredCertificates[0].image_url ? (
+              <img
+                src={featuredCertificates[0].image_url}
+                alt="Пример сертификата"
+                className="w-full h-64 object-cover"
+              />
+            ) : (
+              <div className="w-full h-64 bg-gradient-to-br from-pink-200 to-purple-200 flex items-center justify-center">
+                <span className="text-6xl">🎁</span>
+              </div>
+            )}
+            <div className="p-6 text-center">
+              <Link
+                to="/certificates"
+                className="inline-block w-full bg-blue-600 text-white text-center py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+              >
+                Купить
+              </Link>
+            </div>
           </div>
-          {featuredCertificates.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {featuredCertificates.map((certificate) => (
-                <div
-                  key={certificate.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  {certificate.image_url && (
-                    <img
-                      src={certificate.image_url}
-                      alt={`Сертификат ${certificate.amount} ₽`}
-                      className="w-full h-40 object-cover"
-                    />
-                  )}
-                  <div className="p-4">
-                    <div className="text-2xl font-bold text-blue-600 mb-2">
-                      {parseFloat(certificate.amount).toLocaleString('ru-RU')} ₽
-                    </div>
-                    {certificate.description && typeof certificate.description === 'object' && (
-                      <div className="text-sm text-gray-600 space-y-1 mb-3">
-                        {certificate.description.what_included && (
-                          <div><strong>Что включено:</strong> {certificate.description.what_included}</div>
-                        )}
-                        {certificate.description.validity && (
-                          <div><strong>Срок действия:</strong> {certificate.description.validity}</div>
-                        )}
-                        {certificate.description.usage && (
-                          <div><strong>Использование:</strong> {certificate.description.usage}</div>
-                        )}
-                        {certificate.description.where_to_use && (
-                          <div><strong>Где использовать:</strong> {certificate.description.where_to_use}</div>
-                        )}
-                      </div>
-                    )}
-                    <Link
-                      to="/certificates"
-                      className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-                    >
-                      Купить
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 text-gray-500 bg-white rounded-lg shadow-md">
-              Сертификаты скоро появятся
-            </div>
-          )}
         </div>
 
         <div className="mb-8 bg-white rounded-lg shadow-md p-6">
