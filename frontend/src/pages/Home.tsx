@@ -110,16 +110,7 @@ function Home() {
       <div className="container mx-auto px-4 py-8">
         {featuredServices.length > 0 && (
           <div className="mb-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-3xl font-bold">Избранные услуги</h2>
-              <Link
-                to="/services"
-                state={{ from: '/' }}
-                className="text-blue-600 hover:underline font-medium"
-              >
-                Все услуги →
-              </Link>
-            </div>
+            <h2 className="text-3xl font-bold mb-6">Услуги</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {featuredServices.map((service) => (
                 <Link
@@ -188,17 +179,17 @@ function Home() {
           </div>
         )}
 
-        {featuredCertificates.length > 0 && (
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-3xl font-bold">Подарочные сертификаты</h2>
-              <Link
-                to="/certificates"
-                className="text-blue-600 hover:underline font-medium"
-              >
-                Все сертификаты →
-              </Link>
-            </div>
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl font-bold">Подарочные сертификаты</h2>
+            <Link
+              to="/certificates"
+              className="text-blue-600 hover:underline font-medium"
+            >
+              Все сертификаты →
+            </Link>
+          </div>
+          {featuredCertificates.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {featuredCertificates.map((certificate) => (
                 <div
@@ -242,8 +233,12 @@ function Home() {
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-12 text-gray-500 bg-white rounded-lg shadow-md">
+              Сертификаты скоро появятся
+            </div>
+          )}
+        </div>
 
         <div className="mb-8 bg-white rounded-lg shadow-md p-6">
           <h2 className="text-3xl font-bold mb-6 text-center">Контакты</h2>
