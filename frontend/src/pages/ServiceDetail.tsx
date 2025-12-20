@@ -1,10 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import { servicesApi, mastersApi } from '../api/client'
 
 function ServiceDetail() {
   const { id } = useParams<{ id: string }>()
   const serviceId = parseInt(id || '0')
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleBack = () => {
+    const from = (location.state as { from?: string })?.from
+    if (from && from !== location.pathname) {
+      navigate(from)
+    } else {
+      navigate('/services')
+    }
+  }
 
   const { data: service, isLoading: serviceLoading } = useQuery({
     queryKey: ['service', serviceId],
@@ -40,15 +51,15 @@ function ServiceDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        <Link
-          to="/services"
+        <button
+          onClick={handleBack}
           className="mb-4 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors inline-block"
         >
           <span className="text-xl">←</span>
           <span>Назад</span>
-        </Link>
+        </button>
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {service.image_url && (

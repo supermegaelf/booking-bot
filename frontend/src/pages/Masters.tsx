@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import { mastersApi } from '../api/client'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 function Masters() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { data: masters, isLoading } = useQuery({
     queryKey: ['masters'],
     queryFn: () => mastersApi.getAll(undefined, true),
   })
 
   const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1)
+    const from = (location.state as { from?: string })?.from
+    if (from && from !== location.pathname) {
+      navigate(from)
     } else {
       navigate('/')
     }
@@ -43,6 +45,7 @@ function Masters() {
             <Link
               key={master.id}
               to={`/masters/${master.id}`}
+              state={{ from: '/masters' }}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               {master.photo_url && (

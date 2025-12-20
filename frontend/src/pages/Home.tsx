@@ -111,6 +111,7 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
             to="/services"
+            state={{ from: '/' }}
             className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
           >
             <div className="text-4xl mb-3">💇</div>
@@ -120,6 +121,7 @@ function Home() {
 
           <Link
             to="/masters"
+            state={{ from: '/' }}
             className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
           >
             <div className="text-4xl mb-3">👨‍💼</div>
@@ -193,6 +195,7 @@ function Home() {
               <h2 className="text-3xl font-bold">Избранные услуги</h2>
               <Link
                 to="/services"
+                state={{ from: '/' }}
                 className="text-blue-600 hover:underline font-medium"
               >
                 Все услуги →
@@ -231,6 +234,7 @@ function Home() {
               <h2 className="text-2xl font-bold">Другие услуги</h2>
               <Link
                 to="/services"
+                state={{ from: '/' }}
                 className="text-blue-600 hover:underline"
               >
                 Все услуги →
@@ -244,6 +248,7 @@ function Home() {
                   <Link
                     key={service.id}
                     to={`/services/${service.id}`}
+                    state={{ from: '/' }}
                     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                   >
                     {service.image_url && (

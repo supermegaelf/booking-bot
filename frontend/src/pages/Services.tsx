@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { servicesApi } from '../api/client'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import ErrorMessage from '../components/ErrorMessage'
 
 function Services() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { data: services, isLoading, error, refetch } = useQuery({
     queryKey: ['services'],
     queryFn: () => servicesApi.getAll(undefined, true),
@@ -16,8 +17,9 @@ function Services() {
   })
 
   const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1)
+    const from = (location.state as { from?: string })?.from
+    if (from && from !== location.pathname) {
+      navigate(from)
     } else {
       navigate('/')
     }
@@ -75,6 +77,7 @@ function Services() {
             <Link
               key={service.id}
               to={`/services/${service.id}`}
+              state={{ from: '/services' }}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               {service.image_url && (
