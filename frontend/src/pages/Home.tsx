@@ -205,85 +205,63 @@ function Home() {
         </div>
 
         <div className="mb-8 bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-3xl font-bold mb-6 text-center">Контакты</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Информация</h3>
-              {settings?.address && (
-                <div className="mb-3">
-                  <div className="text-sm text-gray-600 mb-1">Адрес:</div>
-                  <div className="font-medium">{settings.address}</div>
-                </div>
+          <div className="text-center mb-6">
+            <p className="text-gray-700 mb-4">Режим работы: ПН - ВС / 09:00 - 21:00</p>
+            
+            <div className="flex justify-center items-center gap-4 mb-6">
+              <a
+                href="tel:+79020988778"
+                className="text-blue-600 hover:text-blue-800 transition-colors"
+                title="Позвонить"
+              >
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+              </a>
+              {settings?.social_links?.vk && (
+                <a
+                  href={settings.social_links.vk}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  title="VK"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.785 16.241s.288-.03.436-.18c.136-.136.132-.392.132-.392s-.02-1.105.48-1.27c.49-.16 1.12 1.08 1.79 1.56.49.36 1.08.28 1.08.28l1.79-.03s.94-.06.49-.8c-.04-.06-.28-.58-1.44-1.65-1.22-1.14-1.06-.48.41-1.47.89-.6 1.25-1.01 1.13-1.19-.1-.16-.72-.12-.72-.12l-1.85.01s-.28-.02-.48.1c-.16.1-.27.33-.27.33s-.48 1.28-1.12 2.37c-1.35 2.31-1.89 2.43-2.11 2.29-.51-.33-.38-1.33-.38-2.04 0-2.22.33-3.15-.65-3.39-.33-.08-.57-.13-1.41-.14-1.08-.02-1.49.01-1.96.28-.27.15-.48.48-.35.5.16.02.52.1.71.36.25.33.24.54.24 1.58 0 .47-.08 1.12-.33 1.58-.2.36-.44.38-.44.38s-.16.02-.36-.27c-.27-.45-.54-1.26-.54-1.72 0-.52.08-1.04-.16-1.43-.13-.2-.37-.27-.49-.28-.1-.01-.22-.01-.22-.01l-1.68.01s-.5.01-.68.23c-.12.15-.01.46-.01.46s.9 2.14 1.92 3.22c.93.98 1.31 1.15 1.46 1.26.22.16.36.13.36.13l1.35-.02s.36-.02.19-.31c-.02-.04-.18-.38-.36-.66-.2-.3-.42-.63-.42-.63s-.03-.24.18-.38c.18-.12.4-.02.4-.02l1.89.01s.5.03.58.24c.06.16.01.3.01.3z"/>
+                  </svg>
+                </a>
               )}
-              {settings?.phone && (
-                <div className="mb-3">
-                  <div className="text-sm text-gray-600 mb-1">Телефон:</div>
-                  <a href={`tel:${settings.phone}`} className="font-medium text-blue-600 hover:underline">
-                    {settings.phone}
-                  </a>
-                </div>
+              {settings?.social_links?.instagram && (
+                <a
+                  href={settings.social_links.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  title="Instagram"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
               )}
-              {settings?.email && (
-                <div className="mb-3">
-                  <div className="text-sm text-gray-600 mb-1">Email:</div>
-                  <a href={`mailto:${settings.email}`} className="font-medium text-blue-600 hover:underline">
-                    {settings.email}
-                  </a>
-                </div>
+              {settings?.social_links?.telegram && (
+                <a
+                  href={settings.social_links.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  title="Telegram"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.169 1.858-.896 6.728-.896 6.728-.518 2.953-1.028 3.719-1.69 3.719-.562 0-.896-.518-1.396-1.028-.618-.518-1.028-.896-1.662-1.396-.733-.562-.259-.896.169-1.396.345-.345 6.211-5.728 6.338-6.211.034-.138.034-.259-.138-.345-.138-.069-.345-.034-.483.034-.172.103-4.138 2.621-5.69 3.862-.207.138-.345.207-.518.207-.138 0-.345-.034-.518-.207-.345-.207-1.207-1.207-2.069-1.862-.69-.518-1.241-.518-1.724.138-.345.518-.896 1.207-1.207 1.862-.207.345-.345.518-.207.69.138.138.345.207.518.207.207.034.414.103.621.207.207.138 1.207.69 1.724.896.518.207 1.034.345 1.552.345.518 0 1.034-.138 1.552-.345.518-.207 1.207-.69 1.724-.896.518-.207 1.034-.345 1.552-.345.518 0 1.034.138 1.552.345.518.207 1.207.69 1.724.896.518.207 1.034.345 1.552.345.518 0 1.034-.138 1.552-.345.518-.207 1.207-.69 1.724-.896.518-.207 1.034-.345 1.552-.345.518 0 1.034.138 1.552.345z"/>
+                  </svg>
+                </a>
               )}
-              {settings?.working_hours && typeof settings.working_hours === 'object' && (
-                <div className="mb-3">
-                  <div className="text-sm text-gray-600 mb-1">Рабочие часы:</div>
-                  <div className="font-medium">
-                    {Object.entries(settings.working_hours).map(([day, hours]) => (
-                      <div key={day}>{day}: {hours as string}</div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Социальные сети</h3>
-              <div className="flex flex-col gap-2">
-                {settings?.social_links?.vk && (
-                  <a
-                    href={settings.social_links.vk}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline flex items-center gap-2"
-                  >
-                    <span>VK</span>
-                  </a>
-                )}
-                {settings?.social_links?.instagram && (
-                  <a
-                    href={settings.social_links.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline flex items-center gap-2"
-                  >
-                    <span>Instagram</span>
-                  </a>
-                )}
-                {settings?.social_links?.telegram && (
-                  <a
-                    href={settings.social_links.telegram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline flex items-center gap-2"
-                  >
-                    <span>Telegram</span>
-                  </a>
-                )}
-              </div>
             </div>
           </div>
 
           {settings?.map_coordinates && (
             <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-4">Как нас найти</h3>
               <div className="w-full h-64 rounded-lg overflow-hidden">
                 <iframe
                   src={yandexMapUrl}
@@ -296,16 +274,21 @@ function Home() {
               </div>
             </div>
           )}
-        </div>
 
-        {settings?.privacy_policy_text && (
-          <div className="mb-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Политика конфиденциальности</h2>
-            <div className="text-gray-700 whitespace-pre-line">
-              {settings.privacy_policy_text}
-            </div>
+          <div className="text-center">
+            {settings?.mini_logo_url && (
+              <div className="mb-4">
+                <img
+                  src={settings.mini_logo_url}
+                  alt="LL BeautyBar"
+                  className="h-16 mx-auto"
+                />
+              </div>
+            )}
+            <p className="text-gray-700 mb-2">Волгоград / Мира, 6</p>
+            <p className="text-gray-600 text-sm">Политика конфиденциальности</p>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
